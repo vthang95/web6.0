@@ -1,1 +1,7 @@
-# web6.0
+# EmptyGame
+
+Usage:
+
+npm install
+
+gulp
