@@ -2,15 +2,15 @@ var Nakama = Nakama || {};
 
 Nakama.configs = {};
 
-const GAME_MIN_WIDTH = 320;
-const GAME_MIN_HEIGHT = 480;
-const GAME_MAX_WIDTH = 640;
-const GAME_MAX_HEIGHT = 960;
+const GAME_WIDTH_MIN = 320;
+const GAME_HEIGHT_MIN = 480;
+const GAME_WIDTH_MAX = 640;
+const GAME_HEIGHT_MAX = 960;
 const SPACESHIP_SIZE_WIDTH = 78;
 const SPACESHIP_SIZE_HEIGHT = 78;
 
 window.onload = function() {
-    Nakama.game = new Phaser.Game(GAME_MAX_WIDTH, GAME_MAX_HEIGHT, Phaser.AUTO, '', {
+    Nakama.game = new Phaser.Game(GAME_WIDTH_MAX, GAME_HEIGHT_MAX, Phaser.CANVAS, '', {
         preload: preload,
         create: create,
         update: update,
@@ -20,10 +20,10 @@ window.onload = function() {
 
 // preparations before game starts
 var preload = function() {
-    Nakama.game.scale.minWidth = GAME_MIN_WIDTH;
-    Nakama.game.scale.minHeight = GAME_MIN_HEIGHT;
-    Nakama.game.scale.maxWidth = GAME_MAX_WIDTH;
-    Nakama.game.scale.maxHeight = GAME_MAX_HEIGHT;
+    Nakama.game.scale.minWidth = GAME_WIDTH_MIN;
+    Nakama.game.scale.minHeight = GAME_HEIGHT_MIN;
+    Nakama.game.scale.maxWidth = GAME_WIDTH_MAX;
+    Nakama.game.scale.maxHeight = GAME_HEIGHT_MAX;
     Nakama.game.scale.pageAlignHorizontally = true;
     Nakama.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
@@ -54,13 +54,13 @@ var update = function() {
     if (Nakama.keyboard.isDown(Phaser.Keyboard.UP) && Nakama.player.position.y > 0) {
         Nakama.player.position.y -= 10;
     } else if (Nakama.keyboard.isDown(Phaser.Keyboard.DOWN)
-                && Nakama.player.position.y < GAME_MAX_HEIGHT - SPACESHIP_SIZE_HEIGHT) {
+                && Nakama.player.position.y < GAME_HEIGHT_MAX - SPACESHIP_SIZE_HEIGHT) {
         Nakama.player.position.y += 10;
     }
     if (Nakama.keyboard.isDown(Phaser.Keyboard.LEFT) && Nakama.player.position.x > 0) {
         Nakama.player.position.x -= 10;
     } else if (Nakama.keyboard.isDown(Phaser.Keyboard.RIGHT)
-                && Nakama.player.position.x < GAME_MAX_WIDTH - SPACESHIP_SIZE_WIDTH) {
+                && Nakama.player.position.x < GAME_WIDTH_MAX - SPACESHIP_SIZE_WIDTH) {
         Nakama.player.position.x += 10;
     }
 }
