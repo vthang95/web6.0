@@ -1,6 +1,6 @@
 class EnemyController {
     constructor(x, y, spriteName, configs) {
-        this.sprite = Nakama.enemyGroup.create(
+        this.sprite = Nakama.game.add.sprite(
             x,
             y,
             'assets',
@@ -36,13 +36,8 @@ class EnemyController {
         }
     }
 
-
-    moveWithTrajectory(trajectory) {
-        trajectory();
-    }
-
     update() {
         this.checkTrajectory();
-        this.moveWithTrajectory(this.trajectory)
+        this.trajectory();
     }
 }

@@ -30,7 +30,7 @@ window.onload = function() {
 }
 
 // preparations before game starts
-var preload = function() {
+var preload = () => {
     Nakama.game.scale.minWidth = Nakama.configs.GAME_WIDTH_MIN;
     Nakama.game.scale.minHeight = Nakama.configs.GAME_HEIGHT_MIN;
     Nakama.game.scale.maxWidth = Nakama.configs.GAME_WIDTH_MAX;
@@ -45,9 +45,10 @@ var preload = function() {
 }
 
 // initialize the game
-var create = function() {
+var create = () => {
     const SPACESHIP_1_SPAWN_CORDINATE_X = Nakama.configs.GAME_WIDTH_MAX / 2;
     const SPACESHIP_1_SPAWN_CORDINATE_Y = Nakama.configs.GAME_HEIGHT_MAX / 2;
+
     Nakama.game.physics.startSystem(Phaser.Physics.ARCADE);
     Nakama.keyboard = Nakama.game.input.keyboard;
 
@@ -80,8 +81,6 @@ var create = function() {
             }
         )
     );
-
-    Nakama.enemyGroup = Nakama.game.add.group();
 
     Nakama.enemies = [];
     Nakama.enemies.push(
@@ -122,12 +121,12 @@ var create = function() {
 }
 
 // update game state each frame
-var update = function() {
-    // console.log(Nakama.configs.enemy.EnemySpawnX)
-    Nakama.players.forEach((ship) => ship.update());
-    Nakama.enemies.forEach((enemy) => enemy.update());
-
+var update = () => {
+    Nakama.players.forEach(ship => ship.update());
+    Nakama.enemies.forEach(enemy => enemy.update());
 }
 
 // before camera render (mostly for debug)
-var render = function() {}
+var render = () => {
+
+}

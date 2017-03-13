@@ -1,5 +1,4 @@
 class ShipController {
-
     constructor(x, y, spriteName, configs) {
         this.sprite = Nakama.game.add.sprite(x, y, 'assets', spriteName);
         this.configs = configs;
@@ -23,4 +22,3 @@ class ShipController {
         }
     }
 }
-// ShipController.SHIP_SPEED = 400;
