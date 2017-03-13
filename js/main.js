@@ -8,7 +8,7 @@ Nakama.configs = {
     SPACESHIP_SIZE_WIDTH: 78,
     SPACESHIP_SIZE_HEIGHT: 78,
     enemy: {
-        EnemySpawnX: Math.floor(Math.random()*460+90),
+        EnemySpawnX: Math.floor(Math.random()*410+90),
         EnemySpawnY: Math.floor(Math.random()*200+100)
     }
 };
@@ -86,10 +86,10 @@ var create = () => {
             'EnemyType1.png',
             {
                 velocity: {
-                    x: 5,
-                    y: 5
+                    x: 400,
+                    y: 400
                 },
-                maxX: 550,
+                maxX: 500,
                 minX: 90,
                 maxY: 300,
                 minY: 100,
@@ -102,11 +102,11 @@ var create = () => {
             'EnemyType2.png',
             {
                 velocity: {
-                    x: 4,
-                    y: 4
+                    x: 300,
+                    y: 300
                 },
-                maxX: 550,
-                minX: 90,
+                maxX: 540,
+                minX: 50,
                 maxY: 300,
                 minY: 100,
                 trajectory: 'zigzag'

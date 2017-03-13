@@ -7,24 +7,38 @@ class EnemyController {
             spriteName
         );
         this.configs = configs;
+        Nakama.game.physics.arcade.enable(this.sprite);
     }
 
     checkTrajectory() {
         var horizontal = () => {
-            this.sprite.position.x += this.configs.velocity.x
-            if (this.sprite.position.x > this.configs.maxX ||this.sprite.position.x < this.configs.minX) {
-                this.configs.velocity.x = -this.configs.velocity.x;
+            if (this.sprite.position.x < this.configs.minX) {
+                this.sprite.body.velocity.x = this.configs.velocity.x;
+            }
+            if (this.sprite.position.x > this.configs.maxX) {
+                this.sprite.body.velocity.x = - this.configs.velocity.x;
+            }
+            if (this.sprite.body.velocity.x == 0) {
+                this.sprite.body.velocity.x = this.configs.velocity.x;
             }
         };
 
         var zigzag = () => {
-            this.sprite.position.x += this.configs.velocity.x;
-            this.sprite.position.y += this.configs.velocity.y;
-            if (this.sprite.position.x > this.configs.maxX || this.sprite.position.x < this.configs.minX) {
-                this.configs.velocity.x = -this.configs.velocity.x;
+            if (this.sprite.position.x > this.configs.maxX) {
+                this.sprite.body.velocity.x = -this.configs.velocity.x;
             }
-            if (this.sprite.position.y > this.configs.maxY || this.sprite.position.y < this.configs.minY) {
-                this.configs.velocity.y = -this.configs.velocity.y;
+            if (this.sprite.position.x < this.configs.minX) {
+                this.sprite.body.velocity.x = this.configs.velocity.x;
+            }
+            if (this.sprite.position.y > this.configs.maxY) {
+                this.sprite.body.velocity.y = -this.configs.velocity.y;
+            }
+            if (this.sprite.position.y < this.configs.minY) {
+                this.sprite.body.velocity.y = this.configs.velocity.y;
+            }
+            if (this.sprite.body.velocity.x === 0 && this.sprite.body.velocity.y === 0) {
+                this.sprite.body.velocity.x = this.configs.velocity.x;
+                this.sprite.body.velocity.y = this.configs.velocity.y;
             }
         }
 
