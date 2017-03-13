@@ -8,12 +8,8 @@ Nakama.configs = {
     SPACESHIP_SIZE_WIDTH: 78,
     SPACESHIP_SIZE_HEIGHT: 78,
     enemy: {
-        EnemySpawnX: function() {
-            return Math.floor(Math.random()*460+90);
-        }(),
-        EnemySpawnY: function() {
-            return Math.floor(Math.random()*200+100);
-        }()
+        EnemySpawnX: Math.floor(Math.random()*460+90),
+        EnemySpawnY: Math.floor(Math.random()*200+100)
     }
 };
 
