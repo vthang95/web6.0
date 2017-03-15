@@ -1,12 +1,13 @@
 class EnemyController {
     constructor(x, y, spriteName, configs) {
-        this.sprite = Nakama.game.add.sprite(
+        this.sprite = Nakama.enemyGroup.create(
             x,
             y,
             'assets',
             spriteName
         );
         this.configs = configs;
+        this.sprite.health = this.configs.health;
         Nakama.game.physics.arcade.enable(this.sprite);
     }
 
@@ -48,6 +49,10 @@ class EnemyController {
         if (this.configs.trajectory === 'zigzag') {
             this.trajectory = zigzag;
         }
+    }
+
+    isShutDown() {
+
     }
 
     update() {

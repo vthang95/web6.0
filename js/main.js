@@ -50,6 +50,7 @@ var create = () => {
     Nakama.keyboard = Nakama.game.input.keyboard;
     Nakama.bulletGroup = Nakama.game.add.physicsGroup();
     Nakama.playerGroup = Nakama.game.add.physicsGroup();
+    Nakama.enemyGroup = Nakama.game.add.physicsGroup();
 
     Nakama.players = [];
     Nakama.players.push(
@@ -96,6 +97,7 @@ var create = () => {
                 minX: 90,
                 maxY: 300,
                 minY: 100,
+                health: 10,
                 trajectory: 'horizontal'
             }
         ),
@@ -112,6 +114,7 @@ var create = () => {
                 minX: 50,
                 maxY: 300,
                 minY: 100,
+                health: 100,
                 trajectory: 'zigzag'
             }
         )
@@ -123,6 +126,16 @@ var create = () => {
 var update = () => {
     Nakama.players.forEach(ship => ship.update());
     Nakama.enemies.forEach(enemy => enemy.update());
+
+    Nakama.game.physics.arcade.overlap(
+        Nakama.bulletGroup,
+        Nakama.enemyGroup,
+        onBulletHitEnemy);
+}
+
+var onBulletHitEnemy = (bulletSprite, enemySprite) => {
+    enemySprite.damage(1);
+    bulletSprite.kill();
 }
 
 // before camera render (mostly for debug)

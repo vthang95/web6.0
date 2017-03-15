@@ -1,3 +1,10 @@
+//TODO homing bullet controller
+// Nakama.enemyGroup.getFirstAlive() return a target
+// setMagnitude(BULLET_SPEED);
+//angularVelocity 15*physicsElapsed
+// setScale
+// mask/stencil
+
 class ShipController {
     constructor(x, y, spriteName, configs) {
         this.sprite = Nakama.playerGroup.create(x, y, 'assets', spriteName);
@@ -36,11 +43,20 @@ class ShipController {
     }
 
     fire() {
+        this.createBullet(new Phaser.Point(0, -1));
+        this.createBullet(new Phaser.Point(1, -3));
+        this.createBullet(new Phaser.Point(-1, -3));
+        this.createBullet(new Phaser.Point(1, -2));
+        this.createBullet(new Phaser.Point(-1, -2));
+    }
+
+    createBullet(direction) {
         new BulletController(
             this.sprite.position.x,
             this.sprite.position.y,
-            new Phaser.Point(0, -1),
+            direction,
             'BulletType1.png'
         );
     }
+
 }

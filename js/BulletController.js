@@ -4,6 +4,7 @@ class BulletController {
         this.sprite.body.velocity = direction.setMagnitude(BulletController.BULLET_SPEED);
         this.sprite.body.checkWorldBounds = true;
         this.sprite.body.outOfBoundsKill = true;
+        this.sprite.angle = Math.atan(direction.x / -direction.y)*180/Math.PI;
         this.sprite.anchor = new Phaser.Point(0.5, 0.5);
     }
 
