@@ -40,7 +40,7 @@ class EnemyController {
                 this.sprite.body.velocity.x = this.configs.velocity.x;
                 this.sprite.body.velocity.y = this.configs.velocity.y;
             }
-        }
+        };
 
         if (this.configs.trajectory === 'horizontal') {
             this.trajectory = horizontal;

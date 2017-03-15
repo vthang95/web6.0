@@ -44,11 +44,12 @@ var preload = () => {
 var create = () => {
     const SPACESHIP_1_SPAWN_CORDINATE_X = Nakama.configs.GAME_WIDTH_MAX / 2;
     const SPACESHIP_1_SPAWN_CORDINATE_Y = Nakama.configs.GAME_HEIGHT_MAX / 2;
+    Nakama.game.add.sprite(0, 0, 'background');
 
     Nakama.game.physics.startSystem(Phaser.Physics.ARCADE);
     Nakama.keyboard = Nakama.game.input.keyboard;
-
-    Nakama.game.add.sprite(0, 0, 'background');
+    Nakama.bulletGroup = Nakama.game.add.physicsGroup();
+    Nakama.playerGroup = Nakama.game.add.physicsGroup();
 
     Nakama.players = [];
     Nakama.players.push(
@@ -61,7 +62,8 @@ var create = () => {
                 down: Phaser.Keyboard.DOWN,
                 left: Phaser.Keyboard.LEFT,
                 right: Phaser.Keyboard.RIGHT,
-                fire: Phaser.Keyboard.SPACEBAR
+                fire: Phaser.Keyboard.SPACEBAR,
+                cooldown: 0.1
             }
         ),
         new ShipController(
@@ -73,7 +75,8 @@ var create = () => {
                 down: Phaser.Keyboard.S,
                 left: Phaser.Keyboard.A,
                 right: Phaser.Keyboard.D,
-                fire: Phaser.Keyboard.G
+                fire: Phaser.Keyboard.G,
+                cooldown: 0.1
             }
         )
     );
