@@ -9,7 +9,9 @@ Nakama.configs = {
     SPACESHIP_SIZE_HEIGHT: 78,
     enemy: {
         EnemySpawnX: Math.floor(Math.random()*410+90),
-        EnemySpawnY: Math.floor(Math.random()*200+100)
+        EnemySpawnY: Math.floor(Math.random()*200+100),
+        bulletSpeed: 400,
+        bulletAngle: 180
     }
 };
 
@@ -48,11 +50,17 @@ var create = () => {
 
     Nakama.game.physics.startSystem(Phaser.Physics.ARCADE);
     Nakama.keyboard = Nakama.game.input.keyboard;
-    Nakama.bulletGroup = Nakama.game.add.physicsGroup();
+
+    Nakama.healthGroup = Nakama.game.add.physicsGroup();
+    Nakama.playerBulletGroup = Nakama.game.add.physicsGroup();
+    Nakama.enemyBulletGroup = Nakama.game.add.physicsGroup();
     Nakama.playerGroup = Nakama.game.add.physicsGroup();
     Nakama.enemyGroup = Nakama.game.add.physicsGroup();
 
     Nakama.players = [];
+    Nakama.enemies = [];
+    Nakama.homingBulletControllers = [];
+
     Nakama.players.push(
         new ShipController(
             SPACESHIP_1_SPAWN_CORDINATE_X,
@@ -64,7 +72,8 @@ var create = () => {
                 left: Phaser.Keyboard.LEFT,
                 right: Phaser.Keyboard.RIGHT,
                 fire: Phaser.Keyboard.SPACEBAR,
-                cooldown: 0.1
+                cooldown: 0.1,
+                health: 10
             }
         ),
         new ShipController(
@@ -77,12 +86,12 @@ var create = () => {
                 left: Phaser.Keyboard.A,
                 right: Phaser.Keyboard.D,
                 fire: Phaser.Keyboard.G,
-                cooldown: 0.1
+                cooldown: 0.1,
+                health: 10
             }
         )
     );
 
-    Nakama.enemies = [];
     Nakama.enemies.push(
         new EnemyController(
             Nakama.configs.enemy.EnemySpawnX,
@@ -90,15 +99,16 @@ var create = () => {
             'EnemyType1.png',
             {
                 velocity: {
-                    x: 400,
-                    y: 400
+                    x: 100,
+                    y: 100
                 },
                 maxX: 500,
                 minX: 90,
                 maxY: 300,
                 minY: 100,
-                health: 10,
-                trajectory: 'horizontal'
+                health: 100,
+                trajectory: 'horizontal',
+                cooldown: 0.5
             }
         ),
         new EnemyController(
@@ -115,10 +125,12 @@ var create = () => {
                 maxY: 300,
                 minY: 100,
                 health: 100,
-                trajectory: 'zigzag'
+                trajectory: 'zigzag',
+                cooldown: 0.5
             }
         )
     );
+
 
 }
 
@@ -126,19 +138,31 @@ var create = () => {
 var update = () => {
     Nakama.players.forEach(ship => ship.update());
     Nakama.enemies.forEach(enemy => enemy.update());
+    Nakama.homingBulletControllers.forEach(homingBullet => homingBullet.update());
 
     Nakama.game.physics.arcade.overlap(
-        Nakama.bulletGroup,
+        Nakama.playerBulletGroup,
         Nakama.enemyGroup,
         onBulletHitEnemy);
+
+    Nakama.game.physics.arcade.overlap(
+        Nakama.enemyBulletGroup,
+        Nakama.playerGroup,
+        onBulletHitPlayer);
 }
 
-var onBulletHitEnemy = (bulletSprite, enemySprite) => {
-    enemySprite.damage(1);
-    bulletSprite.kill();
+var onBulletHitEnemy = (playerBulletSprite, enemySprite) => {
+    enemySprite.damage(playerBulletSprite.damage);
+    playerBulletSprite.kill();
+}
+
+var onBulletHitPlayer = (enemyBulletSprite, playerSprite) => {
+    playerSprite.damage(1);
+    enemyBulletSprite.kill();
 }
 
 // before camera render (mostly for debug)
 var render = () => {
-
+    Nakama.homingBulletControllers.forEach(homingBullet => homingBullet.render());
+    Nakama.players.forEach(player => player.render());
 }

@@ -8,7 +8,9 @@ class EnemyController {
         );
         this.configs = configs;
         this.sprite.health = this.configs.health;
-        Nakama.game.physics.arcade.enable(this.sprite);
+        this.timeSinceLastFire = 0;
+        this.sprite.anchor.setTo(0.5, 0.5);
+        this.checkTrajectory();
     }
 
     checkTrajectory() {
@@ -56,7 +58,24 @@ class EnemyController {
     }
 
     update() {
-        this.checkTrajectory();
         this.trajectory();
+        this.timeSinceLastFire += Nakama.game.time.physicsElapsed;
+        if (this.timeSinceLastFire > this.configs.cooldown + EnemyController.EXTRA_COOLDOWN_TIME) {
+            this.fire();
+            this.timeSinceLastFire = 0;
+        }
+    }
+
+    fire() {
+        if (!this.sprite.alive) return;
+
+        new EnemyBulletController(
+            this.sprite.position,
+            new Phaser.Point(0, 1),
+            Nakama.configs.enemy.bulletSpeed,
+            Nakama.configs.enemy.bulletAngle
+        );
     }
 }
+
+EnemyController.EXTRA_COOLDOWN_TIME = 1;

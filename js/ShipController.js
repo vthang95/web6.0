@@ -8,11 +8,16 @@
 class ShipController {
     constructor(x, y, spriteName, configs) {
         this.sprite = Nakama.playerGroup.create(x, y, 'assets', spriteName);
+        // this.healthBarBg = Nakama.healthGroup.create(400, 300, 'assets', 'PlayerHealthBarBG.png');
+        // this.healthBar = Nakama.healthGroup.create(400, 300, 'assets', 'PlayerHealthBarMask.png');
         this.configs = configs;
         this.sprite.body.collideWorldBounds = true;
-        this.SHIP_SPEED = 400;
+        this.SHIP_SPEED = 300;
         this.timeSinceLastFire = 0;
+        this.timeSinceLastHomingFire = 0;
         this.sprite.anchor = new Phaser.Point(0.5, 0.5);
+        this.sprite.health = this.configs.health;
+        this.bulletControllers = [];
     }
 
     update() {
@@ -31,32 +36,55 @@ class ShipController {
         if (Nakama.keyboard.isDown(this.configs.fire)) {
             this.tryFire();
         }
+        this.bulletControllers.forEach(bullet => bullet.update());
         this.timeSinceLastFire += Nakama.game.time.physicsElapsed;
+        this.timeSinceLastHomingFire += Nakama.game.time.physicsElapsed;
     }
 
     tryFire() {
         if (this.timeSinceLastFire >= this.configs.cooldown) {
             this.fire();
-            this.timeSinceLastFire = 0
+            this.timeSinceLastFire = 0;
+        }
+
+        if (this.timeSinceLastHomingFire >= this.configs.cooldown + ShipController.DELAY_HOMING_BULLET) {
+            this.homingFire();
+            this.timeSinceLastHomingFire = 0;
         }
 
     }
 
+    homingFire() {
+        if (!this.sprite.alive) return;
+        this.bulletControllers.push(new HomingBulletController(
+            this.sprite.position,
+            new Phaser.Point(0, -1),
+            500
+        ));
+    }
+
     fire() {
+        if (!this.sprite.alive) return;
         this.createBullet(new Phaser.Point(0, -1));
-        this.createBullet(new Phaser.Point(1, -3));
-        this.createBullet(new Phaser.Point(-1, -3));
-        this.createBullet(new Phaser.Point(1, -2));
-        this.createBullet(new Phaser.Point(-1, -2));
+        // this.createBullet(new Phaser.Point(1, -3));
+        // this.createBullet(new Phaser.Point(-1, -3));
+        // this.createBullet(new Phaser.Point(1, -2));
+        // this.createBullet(new Phaser.Point(-1, -2));
     }
 
     createBullet(direction) {
         new BulletController(
-            this.sprite.position.x,
-            this.sprite.position.y,
+            this.sprite.position,
             direction,
-            'BulletType1.png'
+            'BulletType1.png',
+            Nakama.playerBulletGroup,
+            1500,
+            Math.atan(direction.x / -direction.y)*180/Math.PI
         );
     }
-
+    render() {
+        // Nakama.game.debug.spriteInfo(this.sprite, 32, 100);
+    }
 }
+
+ShipController.DELAY_HOMING_BULLET = 1;
