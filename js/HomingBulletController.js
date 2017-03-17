@@ -54,5 +54,3 @@ class HomingBulletController extends BulletController {
         // Nakama.game.debug.spriteInfo(this.target, 32, 100);
     }
 }
-
-HomingBulletController.BULLET_SPEED = 300;
