@@ -34,8 +34,8 @@ class ShipController {
         new HomingBulletController(
             this.sprite.position,
             new Phaser.Point(0, -1),
-            Nakama.playerBulletGroup,
             'BulletType2Upgraded.png',
+            Nakama.playerBulletGroup,
             Nakama.configs.player.homingBulletSpeed
         );
     }

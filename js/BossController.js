@@ -80,8 +80,8 @@ class BossController {
                     new HomingBulletController(
                         self.sprite.position,
                         new Phaser.Point(0, -1),
-                        Nakama.enemyHomingBulletGroup,
                         'EnemyBulletType1.png',
+                        Nakama.enemyHomingBulletGroup,
                         Nakama.configs.boss.homingBulletSpeed.heavyStrike
                     );
                 }, (time - i) * delayRespawnTime);
@@ -95,8 +95,8 @@ class BossController {
         new HomingBulletController(
             this.sprite.position,
             new Phaser.Point(0, -1),
-            Nakama.enemyHomingBulletGroup,
             'EnemyBulletType2.png',
+            Nakama.enemyHomingBulletGroup,
             Nakama.configs.enemy.bulletSpeed
         );
     }

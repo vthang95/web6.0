@@ -1,5 +1,5 @@
 class HomingBulletController extends BulletController {
-    constructor(position, direction, physicsGroup, spriteName, bulletSpeed) {
+    constructor(position, direction, spriteName, physicsGroup, bulletSpeed) {
         super(position, direction, spriteName, physicsGroup, bulletSpeed);
         Nakama.homingBulletControllers.push(this);
         this.sprite.events.onKilled.add(this.remove, this);
@@ -54,5 +54,3 @@ class HomingBulletController extends BulletController {
         // Nakama.game.debug.spriteInfo(this.target, 32, 100);
     }
 }
-
-HomingBulletController.BULLET_SPEED = 300;
