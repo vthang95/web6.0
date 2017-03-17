@@ -8,9 +8,17 @@ class EnemyController {
         );
         this.configs = configs;
         this.sprite.health = this.configs.health;
-        this.timeSinceLastFire = 0;
         this.sprite.anchor.setTo(0.5, 0.5);
         this.checkTrajectory();
+
+        this.timeSinceLastFire = 0;
+
+        Nakama.enemies.push(this);
+        this.sprite.events.onKilled.add(this.remove, this);
+    }
+
+    remove() {
+        Nakama.enemies.splice(Nakama.enemies.indexOf(this), 1);
     }
 
     checkTrajectory() {
@@ -19,7 +27,7 @@ class EnemyController {
                 this.sprite.body.velocity.x = this.configs.velocity.x;
             }
             if (this.sprite.position.x > this.configs.maxX) {
-                this.sprite.body.velocity.x = - this.configs.velocity.x;
+                this.sprite.body.velocity.x = -this.configs.velocity.x;
             }
             if (this.sprite.body.velocity.x == 0) {
                 this.sprite.body.velocity.x = this.configs.velocity.x;
@@ -57,15 +65,6 @@ class EnemyController {
 
     }
 
-    update() {
-        this.trajectory();
-        this.timeSinceLastFire += Nakama.game.time.physicsElapsed;
-        if (this.timeSinceLastFire > this.configs.cooldown + EnemyController.EXTRA_COOLDOWN_TIME) {
-            this.fire();
-            this.timeSinceLastFire = 0;
-        }
-    }
-
     fire() {
         if (!this.sprite.alive) return;
 
@@ -76,6 +75,16 @@ class EnemyController {
             Nakama.configs.enemy.bulletAngle
         );
     }
+
+    update() {
+        this.trajectory();
+        this.timeSinceLastFire += Nakama.game.time.physicsElapsed;
+        if (this.timeSinceLastFire > this.configs.cooldown + EnemyController.EXTRA_COOLDOWN_TIME) {
+            this.fire();
+            this.timeSinceLastFire = 0;
+        }
+    }
+
 }
 
-EnemyController.EXTRA_COOLDOWN_TIME = 1;
+EnemyController.EXTRA_COOLDOWN_TIME = 2;

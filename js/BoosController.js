@@ -1,5 +1,0 @@
-class BossController {
-    // constructor() {
-    //     super();
-    // }
-}

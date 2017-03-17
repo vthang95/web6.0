@@ -1,44 +1,19 @@
-//TODO homing bullet controller
-// Nakama.enemyGroup.getFirstAlive() return a target
-// setMagnitude(BULLET_SPEED);
-//angularVelocity 15*physicsElapsed
-// setScale
-// mask/stencil
-
 class ShipController {
     constructor(x, y, spriteName, configs) {
         this.sprite = Nakama.playerGroup.create(x, y, 'assets', spriteName);
-        // this.healthBarBg = Nakama.healthGroup.create(400, 300, 'assets', 'PlayerHealthBarBG.png');
-        // this.healthBar = Nakama.healthGroup.create(400, 300, 'assets', 'PlayerHealthBarMask.png');
         this.configs = configs;
         this.sprite.body.collideWorldBounds = true;
-        this.SHIP_SPEED = 300;
         this.timeSinceLastFire = 0;
         this.timeSinceLastHomingFire = 0;
         this.sprite.anchor = new Phaser.Point(0.5, 0.5);
         this.sprite.health = this.configs.health;
-        this.bulletControllers = [];
+
+        Nakama.players.push(this);
+        this.sprite.events.onKilled.add(this.remove, this);
     }
 
-    update() {
-        this.sprite.body.velocity.x = 0;
-        this.sprite.body.velocity.y = 0;
-        if (Nakama.keyboard.isDown(this.configs.up)) {
-            this.sprite.body.velocity.y = -this.SHIP_SPEED;
-        } else if (Nakama.keyboard.isDown(this.configs.down)) {
-            this.sprite.body.velocity.y = this.SHIP_SPEED;
-        }
-        if (Nakama.keyboard.isDown(this.configs.left)) {
-            this.sprite.body.velocity.x = -this.SHIP_SPEED;
-        } else if (Nakama.keyboard.isDown(this.configs.right)) {
-            this.sprite.body.velocity.x = this.SHIP_SPEED;
-        }
-        if (Nakama.keyboard.isDown(this.configs.fire)) {
-            this.tryFire();
-        }
-        this.bulletControllers.forEach(bullet => bullet.update());
-        this.timeSinceLastFire += Nakama.game.time.physicsElapsed;
-        this.timeSinceLastHomingFire += Nakama.game.time.physicsElapsed;
+    remove() {
+        Nakama.players.splice(Nakama.players.indexOf(this), 1);
     }
 
     tryFire() {
@@ -56,11 +31,13 @@ class ShipController {
 
     homingFire() {
         if (!this.sprite.alive) return;
-        this.bulletControllers.push(new HomingBulletController(
+        new HomingBulletController(
             this.sprite.position,
             new Phaser.Point(0, -1),
-            500
-        ));
+            Nakama.playerBulletGroup,
+            'BulletType2Upgraded.png',
+            Nakama.configs.player.homingBulletSpeed
+        );
     }
 
     fire() {
@@ -79,9 +56,31 @@ class ShipController {
             'BulletType1.png',
             Nakama.playerBulletGroup,
             1500,
-            Math.atan(direction.x / -direction.y)*180/Math.PI
+            Math.atan(direction.x / -direction.y) * 180 / Math.PI
         );
     }
+
+    update() {
+        this.sprite.body.velocity.x = 0;
+        this.sprite.body.velocity.y = 0;
+        if (Nakama.keyboard.isDown(this.configs.up)) {
+            this.sprite.body.velocity.y = -this.configs.shipSpeed;
+        } else if (Nakama.keyboard.isDown(this.configs.down)) {
+            this.sprite.body.velocity.y = this.configs.shipSpeed;
+        }
+        if (Nakama.keyboard.isDown(this.configs.left)) {
+            this.sprite.body.velocity.x = -this.configs.shipSpeed;
+        } else if (Nakama.keyboard.isDown(this.configs.right)) {
+            this.sprite.body.velocity.x = this.configs.shipSpeed;
+        }
+        if (Nakama.keyboard.isDown(this.configs.fire)) {
+            this.tryFire();
+        }
+
+        this.timeSinceLastFire += Nakama.game.time.physicsElapsed;
+        this.timeSinceLastHomingFire += Nakama.game.time.physicsElapsed;
+    }
+
     render() {
         // Nakama.game.debug.spriteInfo(this.sprite, 32, 100);
     }
