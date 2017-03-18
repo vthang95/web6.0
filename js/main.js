@@ -111,39 +111,39 @@ var create = () => {
     );
 
     new EnemyController(
-            Nakama.configs.enemy.EnemySpawnX,
-            Nakama.configs.enemy.EnemySpawnY,
-            'EnemyType1.png', {
-                velocity: {
-                    x: 100,
-                    y: 100
-                },
-                maxX: 500,
-                minX: 90,
-                maxY: 300,
-                minY: 100,
-                health: 20,
-                trajectory: 'horizontal',
-                cooldown: 0.5
-            }
-        ),
-        new EnemyController(
-            Nakama.configs.enemy.EnemySpawnX,
-            Nakama.configs.enemy.EnemySpawnY,
-            'EnemyType2.png', {
-                velocity: {
-                    x: 300,
-                    y: 300
-                },
-                maxX: 500,
-                minX: 50,
-                maxY: 300,
-                minY: 100,
-                health: 20,
-                trajectory: 'zigzag',
-                cooldown: 0.5
-            }
-        )
+        Nakama.configs.enemy.EnemySpawnX,
+        Nakama.configs.enemy.EnemySpawnY,
+        'EnemyType1.png', {
+            velocity: {
+                x: 100,
+                y: 100
+            },
+            maxX: 500,
+            minX: 90,
+            maxY: 300,
+            minY: 100,
+            health: 20,
+            trajectory: 'horizontal',
+            cooldown: 0.5
+        }
+    );
+    new EnemyController(
+        Nakama.configs.enemy.EnemySpawnX,
+        Nakama.configs.enemy.EnemySpawnY,
+        'EnemyType2.png', {
+            velocity: {
+                x: 300,
+                y: 300
+            },
+            maxX: 500,
+            minX: 50,
+            maxY: 300,
+            minY: 100,
+            health: 20,
+            trajectory: 'zigzag',
+            cooldown: 0.5
+        }
+    );
 
     new BossController(
         Nakama.configs.boss.respawnX,
